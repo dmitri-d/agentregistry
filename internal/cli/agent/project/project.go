@@ -10,10 +10,10 @@ import (
 
 	"github.com/agentregistry-dev/agentregistry/internal/cli/agent/frameworks/adk/python"
 	agentmanifest "github.com/agentregistry-dev/agentregistry/internal/cli/agent/manifest"
-	"github.com/agentregistry-dev/agentregistry/internal/cli/scheme"
 	"github.com/agentregistry-dev/agentregistry/internal/utils"
 	"github.com/agentregistry-dev/agentregistry/internal/version"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
 )
 
 // LoadAgent decodes the on-disk v1alpha1.Agent envelope at

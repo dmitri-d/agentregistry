@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/agentregistry-dev/agentregistry/internal/cli/scheme"
 	arv0 "github.com/agentregistry-dev/agentregistry/pkg/api/v0"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
 	"github.com/spf13/cobra"
 )
 

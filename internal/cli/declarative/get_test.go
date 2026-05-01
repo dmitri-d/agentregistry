@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/agentregistry-dev/agentregistry/internal/cli/declarative"
-	"github.com/agentregistry-dev/agentregistry/internal/cli/scheme"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

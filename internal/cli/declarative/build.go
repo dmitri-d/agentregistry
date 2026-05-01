@@ -10,9 +10,9 @@ import (
 	"github.com/agentregistry-dev/agentregistry/internal/cli/common"
 	"github.com/agentregistry-dev/agentregistry/internal/cli/common/docker"
 	mcpbuild "github.com/agentregistry-dev/agentregistry/internal/cli/mcp/build"
-	"github.com/agentregistry-dev/agentregistry/internal/cli/scheme"
 	"github.com/agentregistry-dev/agentregistry/internal/version"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
 	"github.com/spf13/cobra"
 )
 

@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/agentregistry-dev/agentregistry/internal/cli/scheme"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
 )
 
 // errNotListable is returned by listItems for kinds that do not support list operations.

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/agentregistry-dev/agentregistry/internal/cli/manifest"
-	"github.com/agentregistry-dev/agentregistry/internal/cli/scheme"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
 )
 
 const ManifestFileName = "mcp.yaml"
