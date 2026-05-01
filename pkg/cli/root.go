@@ -15,8 +15,8 @@ import (
 	"github.com/agentregistry-dev/agentregistry/internal/cli/declarative"
 	"github.com/agentregistry-dev/agentregistry/internal/cli/mcp"
 	"github.com/agentregistry-dev/agentregistry/internal/cli/skill"
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/cli/annotations"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/daemon/dockercompose"
 	"github.com/agentregistry-dev/agentregistry/pkg/types"
 	"github.com/spf13/cobra"
@@ -40,15 +40,19 @@ type CLIOptions struct {
 	ClientFactory ClientFactory
 }
 
+type CmdInitFunc func(CLIOptions, *client.Client)
+
 var (
 	cliOptions    CLIOptions
 	registryURL   string
 	registryToken string
+	cmdInitFuncs  []CmdInitFunc
 )
 
 // Configure applies options to the root command (e.g. for tests or alternate entry points).
-func Configure(opts CLIOptions) {
+func Configure(opts CLIOptions, initFuncs ...CmdInitFunc) {
 	cliOptions = opts
+	cmdInitFuncs = initFuncs
 }
 
 // Root returns the root cobra command. Used by main and tests.
@@ -77,6 +81,10 @@ var rootCmd = &cobra.Command{
 		skill.SetAPIClient(c)
 		cli.SetAPIClient(c)
 		declarative.SetAPIClient(c)
+
+		for _, f := range cmdInitFuncs {
+			f(cliOptions, c)
+		}
 		return nil
 	},
 }

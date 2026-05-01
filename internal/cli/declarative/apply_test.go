@@ -12,8 +12,8 @@ import (
 	"testing"
 
 	"github.com/agentregistry-dev/agentregistry/internal/cli/declarative"
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	arv0 "github.com/agentregistry-dev/agentregistry/pkg/api/v0"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

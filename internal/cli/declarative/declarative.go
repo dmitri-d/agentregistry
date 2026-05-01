@@ -4,9 +4,10 @@ import (
 	"context"
 
 	cliCommon "github.com/agentregistry-dev/agentregistry/internal/cli/common"
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/cli/declarative"
 	"github.com/agentregistry-dev/agentregistry/pkg/cli/scheme"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 )
 
 var apiClient *client.Client
@@ -18,7 +19,7 @@ func SetAPIClient(c *client.Client) {
 }
 
 func init() {
-	scheme.Register(typedKind(
+	scheme.Register(declarative.TypedKind(
 		"agent", "agents", []string{"Agent"},
 		[]scheme.Column{
 			{Header: "NAME"}, {Header: "VERSION"}, {Header: "FRAMEWORK"},
@@ -26,50 +27,56 @@ func init() {
 		},
 		v1alpha1.KindAgent,
 		func() *v1alpha1.Agent { return &v1alpha1.Agent{} },
+		&apiClient,
 		agentRow,
 	))
 
-	scheme.Register(typedKind(
+	scheme.Register(declarative.TypedKind(
 		"mcp", "mcps", []string{"MCPServer", "mcpserver", "mcp-server", "mcpservers"},
 		[]scheme.Column{{Header: "NAME"}, {Header: "VERSION"}, {Header: "DESCRIPTION"}},
 		v1alpha1.KindMCPServer,
 		func() *v1alpha1.MCPServer { return &v1alpha1.MCPServer{} },
+		&apiClient,
 		mcpRow,
 	))
 
-	scheme.Register(typedKind(
+	scheme.Register(declarative.TypedKind(
 		"skill", "skills", []string{"Skill"},
 		[]scheme.Column{
 			{Header: "NAME"}, {Header: "VERSION"}, {Header: "DESCRIPTION"},
 		},
 		v1alpha1.KindSkill,
 		func() *v1alpha1.Skill { return &v1alpha1.Skill{} },
+		&apiClient,
 		skillRow,
 	))
 
-	scheme.Register(typedKind(
+	scheme.Register(declarative.TypedKind(
 		"prompt", "prompts", []string{"Prompt"},
 		[]scheme.Column{{Header: "NAME"}, {Header: "VERSION"}, {Header: "DESCRIPTION"}},
 		v1alpha1.KindPrompt,
 		func() *v1alpha1.Prompt { return &v1alpha1.Prompt{} },
+		&apiClient,
 		promptRow,
 	))
 
-	scheme.Register(typedKind(
+	scheme.Register(declarative.TypedKind(
 		"provider", "providers", []string{"Provider"},
 		[]scheme.Column{{Header: "NAME"}, {Header: "PLATFORM"}},
 		v1alpha1.KindProvider,
 		func() *v1alpha1.Provider { return &v1alpha1.Provider{} },
+		&apiClient,
 		providerRow,
 	))
 
-	scheme.Register(typedKind(
+	scheme.Register(declarative.TypedKind(
 		"remote-mcp", "remote-mcps", []string{
 			"RemoteMCPServer", "remotemcpserver", "remote-mcp-server", "remotemcpservers",
 		},
 		[]scheme.Column{{Header: "NAME"}, {Header: "VERSION"}, {Header: "TYPE"}, {Header: "URL"}},
 		v1alpha1.KindRemoteMCPServer,
 		func() *v1alpha1.RemoteMCPServer { return &v1alpha1.RemoteMCPServer{} },
+		&apiClient,
 		remoteMCPServerRow,
 	))
 
@@ -112,44 +119,4 @@ func init() {
 			{Header: "TYPE"}, {Header: "PROVIDER"}, {Header: "STATUS"},
 		},
 	})
-}
-
-// typedKind builds a scheme.Kind whose Get / List / Delete dispatch
-// closures all wire through the typed v1alpha1 client helpers
-// (client.GetTyped[T] / client.ListAllTyped[T] / apiClient.Delete) for
-// the canonical kind. Per-kind callers supply the user-facing name +
-// aliases, the table layout, and a row formatter that takes the typed
-// envelope T directly. RowFunc shape-checks the input via T-assertion
-// so the registry's `any` API stays internal.
-func typedKind[T v1alpha1.Object](
-	cliName, plural string,
-	aliases []string,
-	columns []scheme.Column,
-	canonicalKind string,
-	newObj func() T,
-	row func(T) []string,
-) *scheme.Kind {
-	return &scheme.Kind{
-		Kind:         cliName,
-		Plural:       plural,
-		Aliases:      aliases,
-		TableColumns: columns,
-		ToYAMLFunc:   func(item any) any { return item },
-		RowFunc: func(item any) []string {
-			t, ok := item.(T)
-			if !ok {
-				return []string{"<invalid>"}
-			}
-			return row(t)
-		},
-		Get: func(ctx context.Context, name, _ string) (any, error) {
-			return client.GetTyped(ctx, apiClient, canonicalKind, v1alpha1.DefaultNamespace, name, "", newObj)
-		},
-		ListFunc: func(ctx context.Context) ([]any, error) {
-			return listLatestAny(ctx, canonicalKind, newObj)
-		},
-		Delete: func(ctx context.Context, name, version string, force bool) error {
-			return deleteAny(ctx, canonicalKind, name, version, force, newObj)
-		},
-	}
 }

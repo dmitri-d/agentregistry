@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/cli/annotations"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/types"
 	"github.com/spf13/cobra"
 )

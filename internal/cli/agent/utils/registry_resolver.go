@@ -7,8 +7,8 @@ import (
 
 	"github.com/agentregistry-dev/agentregistry/internal/cli/agent/frameworks/common"
 	agentmanifest "github.com/agentregistry-dev/agentregistry/internal/cli/agent/manifest"
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 )
 
 var defaultRegistryURL = "http://127.0.0.1:12121"

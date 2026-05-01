@@ -1,7 +1,7 @@
 package agent
 
 import (
-	"github.com/agentregistry-dev/agentregistry/internal/client"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 	"github.com/spf13/cobra"
 )
 

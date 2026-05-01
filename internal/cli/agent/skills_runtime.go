@@ -11,8 +11,8 @@ import (
 
 	agentmanifest "github.com/agentregistry-dev/agentregistry/internal/cli/agent/manifest"
 	"github.com/agentregistry-dev/agentregistry/internal/cli/common/gitutil"
-	arclient "github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	arclient "github.com/agentregistry-dev/agentregistry/pkg/client"
 )
 
 type resolvedSkillRef struct {

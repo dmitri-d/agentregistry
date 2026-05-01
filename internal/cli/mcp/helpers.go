@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 )
 
 // fileExists checks if a file exists at the given path.

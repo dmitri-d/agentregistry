@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/agentregistry-dev/agentregistry/internal/cli/common/gitutil"
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/printer"
 	"github.com/spf13/cobra"
 )

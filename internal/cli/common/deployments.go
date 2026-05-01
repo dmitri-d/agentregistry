@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 )
 
 const platformMetadataPrefix = "platforms.agentregistry.solo.io/"

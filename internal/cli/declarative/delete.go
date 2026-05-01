@@ -85,7 +85,7 @@ func deleteFromFile(cmd *cobra.Command, filename string) error {
 		return fmt.Errorf("API client not initialized")
 	}
 
-	results, err := apiClient.DeleteViaApply(cmd.Context(), data)
+	results, err := (*apiClient).DeleteViaApply(cmd.Context(), data)
 	if err != nil {
 		return fmt.Errorf("DELETE /v0/apply: %w", err)
 	}

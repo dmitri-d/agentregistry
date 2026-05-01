@@ -6,10 +6,10 @@ import (
 	"maps"
 	"os"
 
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	platformtypes "github.com/agentregistry-dev/agentregistry/internal/registry/platforms/types"
 	platformutils "github.com/agentregistry-dev/agentregistry/internal/registry/platforms/utils"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 )
 
 // Resolve pairs a v1alpha1.Agent envelope with the resolved runtime

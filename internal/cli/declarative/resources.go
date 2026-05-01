@@ -7,8 +7,8 @@ import (
 	"time"
 
 	cliCommon "github.com/agentregistry-dev/agentregistry/internal/cli/common"
-	"github.com/agentregistry-dev/agentregistry/internal/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/api/v1alpha1"
+	"github.com/agentregistry-dev/agentregistry/pkg/client"
 	"github.com/agentregistry-dev/agentregistry/pkg/printer"
 	"github.com/agentregistry-dev/agentregistry/pkg/registry/database"
 )
@@ -25,41 +25,6 @@ type deploymentStatus struct {
 	ProviderMetadata map[string]any `json:"providerMetadata,omitempty" yaml:"providerMetadata,omitempty"`
 	DeployedAt       time.Time      `json:"deployedAt,omitempty" yaml:"deployedAt,omitempty"`
 	UpdatedAt        time.Time      `json:"updatedAt,omitempty" yaml:"updatedAt,omitempty"`
-}
-
-func listLatestAny[T v1alpha1.Object](ctx context.Context, kind string, newObj func() T) ([]any, error) {
-	items, err := client.ListAllTyped(
-		ctx,
-		apiClient,
-		kind,
-		client.ListOpts{
-			Namespace:  v1alpha1.DefaultNamespace,
-			LatestOnly: true,
-			Limit:      200,
-		},
-		newObj,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	out := make([]any, 0, len(items))
-	for _, item := range items {
-		out = append(out, item)
-	}
-	return out, nil
-}
-
-func deleteAny[T v1alpha1.Object](ctx context.Context, kind, name, version string, force bool, newObj func() T) error {
-	targetVersion := version
-	if targetVersion == "" {
-		obj, err := client.GetTyped(ctx, apiClient, kind, v1alpha1.DefaultNamespace, name, "", newObj)
-		if err != nil {
-			return err
-		}
-		targetVersion = obj.GetMetadata().Version
-	}
-	return apiClient.Delete(ctx, kind, v1alpha1.DefaultNamespace, name, targetVersion, client.DeleteOpts{Force: force})
 }
 
 func listDeploymentAny(ctx context.Context) ([]any, error) {
@@ -112,7 +77,7 @@ func deleteDeploymentByTarget(ctx context.Context, name, version string, force b
 
 	var errs []error
 	for _, dep := range matches {
-		if err := apiClient.Delete(ctx, v1alpha1.KindDeployment, dep.Namespace, dep.Name, dep.Version, client.DeleteOpts{Force: force}); err != nil {
+		if err := (*apiClient).Delete(ctx, v1alpha1.KindDeployment, dep.Namespace, dep.Name, dep.Version, client.DeleteOpts{Force: force}); err != nil {
 			errs = append(errs, fmt.Errorf("deleting %s (provider %s): %w", dep.ID, dep.ProviderID, err))
 		}
 	}
