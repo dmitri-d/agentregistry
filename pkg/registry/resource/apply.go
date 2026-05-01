@@ -232,6 +232,10 @@ func resolveBatchTarget(cfg ApplyConfig, obj v1alpha1.Object, verb string) (*v1a
 	kind := obj.GetKind()
 	meta := obj.GetMetadata()
 
+	for s := range cfg.Stores {
+		fmt.Printf("11111111111111111 %s\n", s)
+	}
+
 	store, ok := cfg.Stores[kind]
 	if !ok || store == nil {
 		return nil, *meta, &applyError{
